@@ -1,0 +1,21 @@
+test:
+  hostport: httpbin.org:80
+  #  hostport: localhost:5000
+  #  uri: http://${test.hostport}
+  uri: lb://testservice
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            maxAge: 10
+            allowedOrigins: "*"
+            allowedMethods:
+            - GET
+      routes:
+      - id: host_foo_path_headers_to_httpbin
+        uri: ${test.uri}
+        predicates:
+        - Host=**.foo.org
